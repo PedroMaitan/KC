@@ -1,0 +1,30 @@
+version: "1" 
+
+services:
+    keycloak:
+        image: quay.io/keycloak/keycloak:23.0.6
+        ports:
+            - "8080:8080"
+            - "8443:8443"
+        environment:
+            - KEYCLOAK_ADMIN=admin
+            - KEYCLOAK_ADMIN_PASSWORD=admin
+            - KC_DB=postgres
+            - KC_DB_USERNAME=webadmin
+            - KC_DB_PASSWORD=4A1TPO18a0
+            - KC_DB_URL_HOST=10.100.56.206
+            - KC_DB_URL_DATABASE=KeyCloak
+            - KC_HOSTNAME=authclab.iliberty.com.br
+            - KC_HTTP_ENABLED=true
+            - KC_HTTPS_CERTIFICATE_FILE=/etc/x509/https/tls.crt
+            - KC_HTTPS_CERTIFICATE_KEY_FILE=/etc/x509/https/tls.key
+        volumes:
+            - /opt/keycloakclab/providers:/opt/keycloak/providers
+            - /var/ftp/cert/fullchain.pem:/etc/x509/https/tls.crt
+            - /var/ftp/cert/privkey.pem:/etc/x509/https/tls.key
+        restart: always
+        command:
+            - "start"
+            - "--http-enabled=true"
+            - "--health-enabled=true"
+            - "--metrics-enabled=true"
